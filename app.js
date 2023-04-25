@@ -4,6 +4,7 @@ const express = require('express');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const app = express();
 
@@ -21,6 +22,7 @@ const Records = require('./models/recordSchema');
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(cors({origin: true}));
 
 // Import Routes
 const recordRoutes = require('./routes/records');
