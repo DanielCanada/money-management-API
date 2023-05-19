@@ -8,6 +8,43 @@ router.get('/', async (req, res) => {
   res.json(records);
 });
 
+// pagination with tabulator (serverside)
+router.get('/pagination', async (req, res) => {
+  // Extract pagination parameters from the request query
+  const page = parseInt(req.query.page) || 1;
+  const size = parseInt(req.query.size) || 10;
+
+  try {
+    // Get the total count of records
+    const totalCount = await Records.countDocuments();
+
+    // Calculate the number of skip documents
+    const skip = (page - 1) * size;
+
+    // Fetch the paginated records from the database
+    const records = await Records.find()
+      .skip(skip)
+      .limit(size)
+      .exec();
+
+    // Prepare the response object
+    const response = {
+      total: totalCount,
+      page,
+      size,
+      data: records,
+    };
+
+    // Send the response
+    res.json(response);
+  } catch (error) {
+    // Handle any errors
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 //Get specific
 router.get('/find/:id', async (req, res) => {
   const r = await Records.findById({_id: req.params.id});
