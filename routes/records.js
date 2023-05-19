@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 router.get('/pagination', async (req, res) => {
   // Extract pagination parameters from the request query
   const page = parseInt(req.query.page) || 1;
-  const size = parseInt(req.query.size) || 10;
+  const size = parseInt(req.query.size) || null;
 
   try {
     // Get the total count of records
@@ -20,6 +20,9 @@ router.get('/pagination', async (req, res) => {
 
     // Calculate the number of skip documents
     const skip = (page - 1) * size;
+
+    // Calculate the total number of pages
+    const lastPage = Math.ceil(totalCount / size);
 
     // Fetch the paginated records from the database
     const records = await Records.find()
@@ -29,10 +32,11 @@ router.get('/pagination', async (req, res) => {
 
     // Prepare the response object
     const response = {
-      total: totalCount,
-      page,
-      size,
+      last_row: totalCount,
+      page: page,
+      size: size,
       data: records,
+      last_page: lastPage,
     };
 
     // Send the response
@@ -48,7 +52,7 @@ router.get('/pagination', async (req, res) => {
 router.get('/pagination2', async (req, res) => {
   // Extract pagination parameters from the request query
   const page = parseInt(req.query.page) || 1;
-  const size = parseInt(req.query.size) || 10;
+  const size = parseInt(req.query.size) || null;
 
   try {
     // Get the total count of records
@@ -56,6 +60,9 @@ router.get('/pagination2', async (req, res) => {
 
     // Calculate the number of skip documents
     const skip = (page - 1) * size;
+
+    // Calculate the total number of pages
+    const lastPage = Math.ceil(totalCount / size);
 
     // Fetch the paginated records from the database
     const records = await Records.find()
@@ -65,10 +72,11 @@ router.get('/pagination2', async (req, res) => {
 
     // Prepare the response object
     const response = {
-      total: totalCount,
-      page,
-      size,
+      last_row: totalCount,
+      page: page,
+      size: size,
       data: records,
+      last_page: lastPage,
     };
 
     // Send the response
