@@ -36,7 +36,7 @@ router.get('/pagination', async (req, res) => {
     };
 
     // Send the response
-    res.json(response);
+    res.json(records);
   } catch (error) {
     // Handle any errors
     console.error(error);
